@@ -1,0 +1,68 @@
+
+
+[ec2-user@ip-172-31-33-146 ~]$ ./Ocritical 
+Pi Estimate (Critical) = 3.1423140000
+Time = 0.221084 seconds
+[ec2-user@ip-172-31-33-146 ~]$ ./Oatomic 
+Pi Estimate (Atomic) = 3.1428560000
+Time = 0.122546 seconds
+[ec2-user@ip-172-31-33-146 ~]$
+
+Atomic is Faster than Critical but slower than Reduction. 
+
+
+
+2.Yes.
+Using #pragma omp critical or #pragma omp atomic fixes the data race issue from your Lab03 program.
+
+In the original Lab03 version, multiple threads updated pCircle and pSquare at the same time → results were nondeterministic (slightly different Pi each run).
+
+With critical or atomic, the updates are thread-safe → results are stable and consistent across runs.
+
+3.
+Original (with data races):
+
+	Fastest execution time, but incorrect results (not thread-safe).
+
+Critical section:
+
+	Correct results, but slowest parallel version — because every thread waits to enter the 	critical section (lots of blocking).
+
+Atomic section:
+
+	Correct results, faster than critical, but slower than the race-condition version.
+
+Reduction (best option):
+
+	Correct results, fully parallel, fastest among safe solutions.
+
+4.Serial version: Only 1 thread → slow, but deterministic.
+
+Parallel version: Faster as you increase thread count, but the gain depends on:
+
+The EC2 instance’s number of physical CPU cores.
+
+Overhead from synchronization (critical/atomic).
+
+• Reduction-based parallel → big speedup.
+
+• Critical/Atomic → speedup smaller, sometimes even slower than serial if too many threads (due to overhead).
+
+5. 2
+[ec2-user@ip-172-31-33-146 ~]$ nproc
+2 (output)
+
+6.
+Yes:
+
+On a small instance (1 vCPU) → no real parallelism, increasing threads won’t help.
+
+On a bigger instance (4+ vCPUs) → parallel code scales better, but:
+
+	Critical/atomic overhead reduces benefits at higher threads.
+
+	Reduction scales much better.
+
+7. Speedup = (Serial time) / (Parallel time)
+
+

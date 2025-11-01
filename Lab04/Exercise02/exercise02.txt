@@ -1,0 +1,20 @@
+Serial Sum = -333333333303516200960.00000
+Time = 0.032371 seconds
+
+Parallel (Critical) Sum = -333333333303516332032.00000
+Time = 0.034167 seconds
+
+Parallel (Atomic) Sum = -333333333303514824704.00000
+Time = 0.484372 seconds
+
+
+
+Parallel program with critical/atomic is correct.
+
+Original data-race program was wrong but misleadingly fast.
+
+Speedup increases with threads but depends on number of cores.
+
+Bigger EC2 instance = more cores = better scaling.
+
+Critical is slower than atomic due to lock contention.
